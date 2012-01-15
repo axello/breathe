@@ -83,7 +83,7 @@ static uint8_t myip[4] = { 0,0,0,0 };
 static uint8_t mynetmask[4] = { 0,0,0,0 };
 
 // IP address of the host being queried to contact (IP of the first portion of the URL):
-static uint8_t websrvip[4] = { 0, 0, 0, 0 };
+static uint8_t websrvip[4] = { 173, 203, 98, 29 };          // api.pachube.com
 
 // Default gateway. The ip address of your DSL router. It can be set to the same as
 // websrvip the case where there is no default GW to access the 
@@ -307,7 +307,7 @@ void initialiseEthernetShield()
 
   Serial.println("Client Gateway Complete, Resolving Host");
 
-  resolveHost(hoststr, websrvip);
+  // resolveHost(hoststr, websrvip);
   Serial.print("Resolved host: ");
   Serial.print(hoststr);
   Serial.print(" to IP: ");
@@ -325,7 +325,7 @@ void resolveHost(char *hostName, uint8_t *ipAddress){
   es.ES_dnslkup_request(buf, (uint8_t*)hostName );
   while(1){
     int plen = es.ES_enc28j60PacketReceive(BUFFER_SIZE, buf);
-    es.ES_packetloop_icmp_tcp(buf,plen);   
+    es.ES_packetloop_icmp_tcp(buf,plen);
     if(es.ES_udp_client_check_for_dns_answer(buf, plen)) {
       uint8_t *websrvipptr = es.ES_dnslkup_getip();
       for(int on=0; on <4; on++ ) {
